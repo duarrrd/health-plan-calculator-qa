@@ -35,7 +35,8 @@ export function calculateCalories(
   goal: Goal
 ) {
   const baseCalories = weight * 22 - 5 * age;
-  return Math.round(baseCalories * ACTIVITY_MULTIPLIERS[activityLevel] + GOAL_OFFSETS[goal]);
+  const calculated = Math.round(baseCalories * ACTIVITY_MULTIPLIERS[activityLevel] + GOAL_OFFSETS[goal]);
+  return Math.max(calculated, 1200);
 }
 
 export function calculateMacros(weight: number, calories: number) {

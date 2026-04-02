@@ -18,8 +18,8 @@ describe("calculator rules", () => {
     expect(calculateStatus(25)).toBe("Overweight");
   });
 
-  it("allows calorie targets to go negative for low weight lose goal", () => {
-    expect(calculateCalories(10, 25, "Low", "Lose weight")).toBeLessThan(0);
+  it("clamps calorie targets to a minimum of 1200", () => {
+    expect(calculateCalories(10, 25, "Low", "Lose weight")).toBe(1200);
   });
 
   it("rounds macros independently", () => {
