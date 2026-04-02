@@ -30,10 +30,11 @@ export function calculateStatus(bmi: number): PlanResult["status"] {
 
 export function calculateCalories(
   weight: number,
+  age: number,
   activityLevel: ActivityLevel,
   goal: Goal
 ) {
-  const baseCalories = weight * 22;
+  const baseCalories = weight * 22 - 5 * age;
   return Math.round(baseCalories * ACTIVITY_MULTIPLIERS[activityLevel] + GOAL_OFFSETS[goal]);
 }
 
@@ -52,8 +53,9 @@ export function calculateMacros(weight: number, calories: number) {
 export function calculatePlan(formValues: FormValues): PlanResult {
   const weight = Number(formValues.weight);
   const height = Number(formValues.height);
+  const age = Number(formValues.age);
   const bmi = calculateBmi(weight, height);
-  const calories = calculateCalories(weight, formValues.activityLevel, formValues.goal);
+  const calories = calculateCalories(weight, age, formValues.activityLevel, formValues.goal);
   const macros = calculateMacros(weight, calories);
 
   return {

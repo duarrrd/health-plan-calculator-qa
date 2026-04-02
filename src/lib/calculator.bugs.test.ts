@@ -31,22 +31,16 @@ describe("Bug exposure: calculator logic", () => {
   // calculateCalories does not accept an age parameter at all
 
   it("should produce different calorie targets for different ages", () => {
-    // A 25-year-old and a 65-year-old with same weight/activity/goal
-    // should get different calorie recommendations
-    const caloriesAge25 = calculateCalories(70, "Medium", "Maintain");
-    const caloriesAge65 = calculateCalories(70, "Medium", "Maintain");
-    // These are currently identical because age is not a parameter
-    // When fixed, the function signature will include age:
-    // calculateCalories(weight, age, activityLevel, goal)
-    // For now, this test documents the gap — both calls return 2310
+    const caloriesAge25 = calculateCalories(70, 25, "Medium", "Maintain");
+    const caloriesAge65 = calculateCalories(70, 65, "Medium", "Maintain");
     expect(caloriesAge25).not.toBe(caloriesAge65);
+    expect(caloriesAge25).toBeGreaterThan(caloriesAge65);
   });
 
   // BUG-004: Negative calorie values are possible
 
   it("should never return negative calorie values", () => {
-    // weight=10, Low activity, Lose weight → 10*22*1.2 + (-300) = -36
-    const calories = calculateCalories(10, "Low", "Lose weight");
+    const calories = calculateCalories(10, 25, "Low", "Lose weight");
     expect(calories).toBeGreaterThan(0);
   });
 

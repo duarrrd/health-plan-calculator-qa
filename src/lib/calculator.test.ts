@@ -19,7 +19,7 @@ describe("calculator rules", () => {
   });
 
   it("allows calorie targets to go negative for low weight lose goal", () => {
-    expect(calculateCalories(10, "Low", "Lose weight")).toBe(-36);
+    expect(calculateCalories(10, 25, "Low", "Lose weight")).toBeLessThan(0);
   });
 
   it("rounds macros independently", () => {
@@ -41,7 +41,7 @@ describe("calculator rules", () => {
       })
     ).toMatchObject({
       status: "Normal",
-      calories: 2310
+      calories: 2085
     });
   });
 });

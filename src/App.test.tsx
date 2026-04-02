@@ -37,12 +37,12 @@ describe("Health Plan Calculator app", () => {
     await user.click(screen.getByRole("button", { name: /calculate plan/i }));
 
     await waitFor(() => {
-      expect(screen.getAllByText("3300 kcal").length).toBeGreaterThan(0);
+      expect(screen.getAllByText("3075 kcal").length).toBeGreaterThan(0);
     });
 
     await user.type(screen.getByLabelText(/calories eaten today/i), "2400");
 
     expect(screen.getByText("Under target")).toBeInTheDocument();
-    expect(screen.getByText("Tracking against 3300 kcal")).toBeInTheDocument();
+    expect(screen.getByText("Tracking against 3075 kcal")).toBeInTheDocument();
   });
 });
