@@ -45,6 +45,9 @@ Similarly:
 
 **Test reference:** `calculator.bugs.test.ts` — "should classify BMI 18.3 as Underweight per WHO standards"
 
+**Screenshot:** ![BUG-001](screenshots/bug-001-bmi-misclassification.png)
+*BMI 18.3 (weight=56, height=175) classified as "Normal" — should be "Underweight" per WHO.*
+
 **Risk assessment:** Users in the 18.0–18.4 BMI range receive incorrect health guidance. A person who is medically underweight is told they are "Normal," potentially delaying intervention. Similarly, BMI 24.0–24.9 users are told "Overweight" when they are within normal range, causing unnecessary concern. In a real health application this could have serious medical implications.
 
 ---
@@ -70,6 +73,9 @@ The MealSimulator component initializes `targetCalories` and `targetProtein` wit
 **Test reference:** `App.bugs.test.ts` — "should update simulator targets when plan is recalculated"
 
 **Risk assessment:** Users who recalculate their plan (e.g., after correcting a typo in weight) see updated results but the simulator still tracks against old values. The "Over limit" / "Under target" status becomes meaningless. Particularly dangerous if a user's actual target is much higher/lower than the stale one.
+
+**Screenshot:** ![BUG-002](screenshots/bug-002-stale-simulator.png)
+*Results card shows 3300 kcal but Meal Simulator still says "Tracking against 2310 kcal."*
 
 **Note:** The existing test `"keeps simulator targets stale after a second calculation"` asserts this broken behavior as correct.
 
@@ -113,6 +119,9 @@ The `calculateCalories` function signature is `(weight, activityLevel, goal)` �
 
 **Test reference:** `calculator.bugs.test.ts` — "should never return negative calorie values"
 
+**Screenshot:** ![BUG-004](screenshots/bug-004-negative-calories.png)
+*Weight=10, Low activity, Lose weight → -36 kcal calories and -42g carbs.*
+
 **Risk assessment:** Displaying negative calories is confusing and medically dangerous if taken literally. The downstream macro calculation also breaks — negative calories produce negative carb values. In a real health app, this could lead to harmful dietary advice.
 
 ---
@@ -133,6 +142,9 @@ The `calculateCalories` function signature is `(weight, activityLevel, goal)` �
 - Height = 0 → BMI: Infinity
 
 **Test reference:** `App.bugs.test.ts` — "should show validation error when submitting empty form"
+
+**Screenshot:** ![BUG-005](screenshots/bug-005-nan-results.png)
+*Empty form submitted — BMI shows "NaN", calories show "0 kcal".*
 
 **Risk assessment:** Users see "NaN" or "Infinity" displayed in the results, which is a poor user experience and erodes trust. No input sanitization means any string is accepted. Zero height causes a division-by-zero producing Infinity BMI.
 
