@@ -3,3 +3,5 @@ dist/
 .DS_Store
 *.pdf
 docs/superpowers/
+test-results/
+playwright-report/
