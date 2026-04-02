@@ -6,8 +6,8 @@ type MealSimulatorProps = {
 };
 
 function MealSimulator({ recommendedCalories, recommendedProtein }: MealSimulatorProps) {
-  const [targetCalories] = useState(recommendedCalories);
-  const [targetProtein] = useState(recommendedProtein);
+  const targetCalories = recommendedCalories;
+  const targetProtein = recommendedProtein;
   const [eatenCalories, setEatenCalories] = useState("");
   const [eatenProtein, setEatenProtein] = useState("");
 
