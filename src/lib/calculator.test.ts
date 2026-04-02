@@ -11,10 +11,11 @@ describe("calculator rules", () => {
     expect(calculateBmi(70, 175)).toBeCloseTo(22.86, 2);
   });
 
-  it("uses the intentionally wrong bmi thresholds from the brief", () => {
-    expect(calculateStatus(17.9)).toBe("Underweight");
-    expect(calculateStatus(18)).toBe("Normal");
-    expect(calculateStatus(24)).toBe("Overweight");
+  it("uses WHO standard bmi thresholds", () => {
+    expect(calculateStatus(18.4)).toBe("Underweight");
+    expect(calculateStatus(18.5)).toBe("Normal");
+    expect(calculateStatus(24.9)).toBe("Normal");
+    expect(calculateStatus(25)).toBe("Overweight");
   });
 
   it("allows calorie targets to go negative for low weight lose goal", () => {

@@ -17,11 +17,11 @@ export function calculateBmi(weight: number, height: number) {
 }
 
 export function calculateStatus(bmi: number): PlanResult["status"] {
-  if (bmi < 18) {
+  if (bmi < 18.5) {
     return "Underweight";
   }
 
-  if (bmi < 24) {
+  if (bmi < 25) {
     return "Normal";
   }
 
