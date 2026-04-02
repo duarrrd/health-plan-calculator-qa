@@ -1,0 +1,246 @@
+:root {
+  font-family: "Manrope", "Segoe UI", sans-serif;
+  color: #14213d;
+  background:
+    radial-gradient(circle at top, rgba(239, 196, 123, 0.45), transparent 30%),
+    linear-gradient(180deg, #fffaf2 0%, #f4efe5 100%);
+  line-height: 1.5;
+  font-weight: 500;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --ink: #14213d;
+  --muted: #5a667f;
+  --line: rgba(20, 33, 61, 0.1);
+  --panel: rgba(255, 255, 255, 0.78);
+  --accent: #c56b2d;
+  --accent-soft: rgba(197, 107, 45, 0.12);
+  --shadow: 0 22px 60px rgba(40, 45, 63, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  color: var(--ink);
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.app-shell {
+  width: min(1040px, calc(100vw - 32px));
+  margin: 0 auto;
+  padding: 56px 0 72px;
+}
+
+.hero {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.hero-kicker,
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.76rem;
+  color: var(--accent);
+}
+
+.hero h1,
+.panel-heading h2 {
+  margin: 0;
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.hero h1 {
+  font-size: clamp(2.8rem, 8vw, 5.8rem);
+  line-height: 0.95;
+  max-width: 10ch;
+}
+
+.hero-copy {
+  margin: 0;
+  max-width: 58ch;
+  color: var(--muted);
+  font-size: 1.02rem;
+}
+
+.layout-stack {
+  display: grid;
+  gap: 18px;
+}
+
+.panel {
+  position: relative;
+  overflow: hidden;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background: var(--panel);
+  backdrop-filter: blur(18px);
+  box-shadow: var(--shadow);
+}
+
+.panel::after {
+  content: "";
+  position: absolute;
+  inset: auto -15% -50% auto;
+  width: 240px;
+  height: 240px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(197, 107, 45, 0.12), transparent 65%);
+  pointer-events: none;
+}
+
+.panel-heading {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.form-grid,
+.simulator-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  min-height: 52px;
+  padding: 14px 16px;
+  border: 1px solid rgba(20, 33, 61, 0.12);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--ink);
+}
+
+.field input:focus,
+.field select:focus {
+  outline: 2px solid rgba(197, 107, 45, 0.25);
+  outline-offset: 1px;
+}
+
+.primary-button {
+  align-self: end;
+  min-height: 52px;
+  border: 0;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #c56b2d, #df9148);
+  color: #fffdf8;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  box-shadow: 0 18px 34px rgba(197, 107, 45, 0.28);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.primary-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 22px 36px rgba(197, 107, 45, 0.32);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.stat-card,
+.summary-chip,
+.macro-strip article {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(20, 33, 61, 0.08);
+}
+
+.stat-card-accent {
+  background: linear-gradient(160deg, rgba(197, 107, 45, 0.12), rgba(255, 255, 255, 0.95));
+}
+
+.stat-card span,
+.summary-chip span,
+.macro-strip span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.stat-card strong,
+.summary-chip strong,
+.macro-strip strong {
+  font-size: 1.4rem;
+}
+
+.macro-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.simulator-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 18px 0 12px;
+}
+
+.tracking-note {
+  margin: 0;
+  color: var(--muted);
+}
+
+.warning-text {
+  margin: 14px 0 0;
+  color: #9d3d18;
+  font-weight: 600;
+}
+
+@media (max-width: 760px) {
+  .app-shell {
+    width: min(100vw - 20px, 1040px);
+    padding: 28px 0 40px;
+  }
+
+  .form-grid,
+  .simulator-grid,
+  .stats-grid,
+  .macro-strip,
+  .simulator-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 16vw, 4.2rem);
+  }
+}
