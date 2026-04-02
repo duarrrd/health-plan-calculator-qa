@@ -47,8 +47,6 @@ describe("Bug exposure: calculator logic", () => {
   // BUG-005 (partial): Zero height produces Infinity BMI
 
   it("should not return Infinity for zero height", () => {
-    // calculateBmi(70, 0) → 70 / (0/100)^2 → 70 / 0 → Infinity
-    const bmi = calculateBmi(70, 0);
-    expect(Number.isFinite(bmi)).toBe(true);
+    expect(() => calculateBmi(70, 0)).toThrow("Height must be greater than zero");
   });
 });

@@ -13,6 +13,9 @@ const GOAL_OFFSETS: Record<Goal, number> = {
 };
 
 export function calculateBmi(weight: number, height: number) {
+  if (height <= 0) {
+    throw new Error("Height must be greater than zero");
+  }
   return weight / (height / 100) ** 2;
 }
 
