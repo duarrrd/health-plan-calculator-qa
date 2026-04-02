@@ -16,6 +16,7 @@ const INITIAL_FORM_VALUES: FormValues = {
 function App() {
   const [formValues, setFormValues] = useState(INITIAL_FORM_VALUES);
   const [result, setResult] = useState<PlanResult | null>(null);
+  const [errors, setErrors] = useState<string[]>([]);
 
   const handleFieldChange = (name: keyof FormValues, value: string) => {
     setFormValues((current) => ({
@@ -24,7 +25,33 @@ function App() {
     }));
   };
 
+  const validate = (): string[] => {
+    const errs: string[] = [];
+    const weight = Number(formValues.weight);
+    const height = Number(formValues.height);
+    const age = Number(formValues.age);
+
+    if (!formValues.weight || isNaN(weight) || weight <= 0) {
+      errs.push("Weight must be a positive number");
+    }
+    if (!formValues.height || isNaN(height) || height <= 0) {
+      errs.push("Height must be a positive number");
+    }
+    if (!formValues.age || isNaN(age) || age <= 0) {
+      errs.push("Age must be a positive number");
+    }
+
+    return errs;
+  };
+
   const handleCalculate = async () => {
+    const validationErrors = validate();
+    if (validationErrors.length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setErrors([]);
     const nextPlan = await new Promise<PlanResult>((resolve) => {
       window.setTimeout(() => resolve(calculatePlan(formValues)), 700);
     });
@@ -44,7 +71,12 @@ function App() {
       </div>
 
       <div className="layout-stack">
-        <UserForm formValues={formValues} onChange={handleFieldChange} onSubmit={handleCalculate} />
+        <UserForm
+          formValues={formValues}
+          errors={errors}
+          onChange={handleFieldChange}
+          onSubmit={handleCalculate}
+        />
 
         {result ? (
           <>

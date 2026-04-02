@@ -13,15 +13,18 @@ const GOAL_OFFSETS: Record<Goal, number> = {
 };
 
 export function calculateBmi(weight: number, height: number) {
+  if (height <= 0) {
+    throw new Error("Height must be greater than zero");
+  }
   return weight / (height / 100) ** 2;
 }
 
 export function calculateStatus(bmi: number): PlanResult["status"] {
-  if (bmi < 18) {
+  if (bmi < 18.5) {
     return "Underweight";
   }
 
-  if (bmi < 24) {
+  if (bmi < 25) {
     return "Normal";
   }
 
@@ -30,11 +33,13 @@ export function calculateStatus(bmi: number): PlanResult["status"] {
 
 export function calculateCalories(
   weight: number,
+  age: number,
   activityLevel: ActivityLevel,
   goal: Goal
 ) {
-  const baseCalories = weight * 22;
-  return Math.round(baseCalories * ACTIVITY_MULTIPLIERS[activityLevel] + GOAL_OFFSETS[goal]);
+  const baseCalories = weight * 22 - 5 * age;
+  const calculated = Math.round(baseCalories * ACTIVITY_MULTIPLIERS[activityLevel] + GOAL_OFFSETS[goal]);
+  return Math.max(calculated, 1200);
 }
 
 export function calculateMacros(weight: number, calories: number) {
@@ -52,8 +57,9 @@ export function calculateMacros(weight: number, calories: number) {
 export function calculatePlan(formValues: FormValues): PlanResult {
   const weight = Number(formValues.weight);
   const height = Number(formValues.height);
+  const age = Number(formValues.age);
   const bmi = calculateBmi(weight, height);
-  const calories = calculateCalories(weight, formValues.activityLevel, formValues.goal);
+  const calories = calculateCalories(weight, age, formValues.activityLevel, formValues.goal);
   const macros = calculateMacros(weight, calories);
 
   return {

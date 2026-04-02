@@ -19,7 +19,7 @@ describe("Health Plan Calculator app", () => {
     });
   });
 
-  it("keeps simulator targets stale after a second calculation", async () => {
+  it("updates simulator targets after a second calculation", async () => {
     const user = userEvent.setup();
     render(<App />);
 
@@ -37,12 +37,12 @@ describe("Health Plan Calculator app", () => {
     await user.click(screen.getByRole("button", { name: /calculate plan/i }));
 
     await waitFor(() => {
-      expect(screen.getByText("3300 kcal")).toBeInTheDocument();
+      expect(screen.getAllByText("3075 kcal").length).toBeGreaterThan(0);
     });
 
     await user.type(screen.getByLabelText(/calories eaten today/i), "2400");
 
-    expect(screen.getByText("Over limit")).toBeInTheDocument();
-    expect(screen.getByText("Tracking against 2310 kcal")).toBeInTheDocument();
+    expect(screen.getByText("Under target")).toBeInTheDocument();
+    expect(screen.getByText("Tracking against 3075 kcal")).toBeInTheDocument();
   });
 });

@@ -10,7 +10,7 @@ describe("Bug exposure: UI and state management", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    // First calculation: weight=70, Medium, Maintain → 2310 kcal
+    // First calculation: weight=70, Medium, Maintain → 2085 kcal
     await user.type(screen.getByLabelText(/weight/i), "70");
     await user.type(screen.getByLabelText(/height/i), "175");
     await user.type(screen.getByLabelText(/age/i), "30");
@@ -19,20 +19,20 @@ describe("Bug exposure: UI and state management", () => {
     await user.click(screen.getByRole("button", { name: /calculate plan/i }));
 
     await waitFor(() => {
-      expect(screen.getAllByText(/2310 kcal/).length).toBeGreaterThan(0);
+      expect(screen.getAllByText(/2085 kcal/).length).toBeGreaterThan(0);
     });
 
-    // Second calculation: weight=100, Medium, Maintain → 3300 kcal
+    // Second calculation: weight=100, Medium, Maintain → 3075 kcal
     await user.clear(screen.getByLabelText(/weight/i));
     await user.type(screen.getByLabelText(/weight/i), "100");
     await user.click(screen.getByRole("button", { name: /calculate plan/i }));
 
     await waitFor(() => {
-      expect(screen.getByText("3300 kcal")).toBeInTheDocument();
+      expect(screen.getAllByText("3075 kcal").length).toBeGreaterThan(0);
     });
 
-    // The simulator should now track against 3300, not 2310
-    expect(screen.getByText("Tracking against 3300 kcal")).toBeInTheDocument();
+    // The simulator should now track against 3075, not 2085
+    expect(screen.getByText("Tracking against 3075 kcal")).toBeInTheDocument();
   });
 
   // BUG-005: No input validation — empty form produces NaN results
@@ -44,15 +44,16 @@ describe("Bug exposure: UI and state management", () => {
     // Submit with all fields empty
     await user.click(screen.getByRole("button", { name: /calculate plan/i }));
 
-    // Wait for results to appear (the app has a 700ms async delay)
-    await waitFor(
-      () => {
-        expect(screen.getByText(/bmi/i)).toBeInTheDocument();
-      },
-      { timeout: 2000 }
-    );
+    // Validation errors should appear immediately (no async delay)
+    await waitFor(() => {
+      expect(screen.getByRole("alert")).toBeInTheDocument();
+    });
 
-    // Should NOT show NaN in results
+    // Should show validation messages, not NaN results
+    expect(screen.getByText(/weight must be a positive number/i)).toBeInTheDocument();
+    expect(screen.getByText(/height must be a positive number/i)).toBeInTheDocument();
+    expect(screen.getByText(/age must be a positive number/i)).toBeInTheDocument();
+
     const body = document.body.textContent || "";
     expect(body).not.toContain("NaN");
   });
