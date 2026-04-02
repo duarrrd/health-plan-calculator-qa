@@ -3,11 +3,12 @@ import type { FormValues } from "../types";
 
 type UserFormProps = {
   formValues: FormValues;
+  errors: string[];
   onChange: (name: keyof FormValues, value: string) => void;
   onSubmit: () => void;
 };
 
-function UserForm({ formValues, onChange, onSubmit }: UserFormProps) {
+function UserForm({ formValues, errors, onChange, onSubmit }: UserFormProps) {
   const handleInputChange =
     (name: keyof FormValues) => (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       onChange(name, event.target.value);
@@ -31,7 +32,8 @@ function UserForm({ formValues, onChange, onSubmit }: UserFormProps) {
           <input
             aria-label="Weight"
             name="weight"
-            type="text"
+            type="number"
+            min="1"
             placeholder="72"
             value={formValues.weight}
             onChange={handleInputChange("weight")}
@@ -43,7 +45,8 @@ function UserForm({ formValues, onChange, onSubmit }: UserFormProps) {
           <input
             aria-label="Height"
             name="height"
-            type="text"
+            type="number"
+            min="1"
             placeholder="175"
             value={formValues.height}
             onChange={handleInputChange("height")}
@@ -55,7 +58,9 @@ function UserForm({ formValues, onChange, onSubmit }: UserFormProps) {
           <input
             aria-label="Age"
             name="age"
-            type="text"
+            type="number"
+            min="1"
+            max="150"
             placeholder="29"
             value={formValues.age}
             onChange={handleInputChange("age")}
@@ -94,6 +99,14 @@ function UserForm({ formValues, onChange, onSubmit }: UserFormProps) {
           Calculate Plan
         </button>
       </form>
+
+      {errors.length > 0 ? (
+        <div role="alert" className="error-list">
+          {errors.map((error) => (
+            <p key={error} className="error-text">{error}</p>
+          ))}
+        </div>
+      ) : null}
     </section>
   );
 }

@@ -226,6 +226,17 @@ select {
   font-weight: 600;
 }
 
+.error-list {
+  margin-top: 16px;
+}
+
+.error-text {
+  margin: 4px 0;
+  color: #9d3d18;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
 @media (max-width: 760px) {
   .app-shell {
     width: min(100vw - 20px, 1040px);

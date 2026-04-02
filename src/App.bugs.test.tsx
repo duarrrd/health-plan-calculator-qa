@@ -44,15 +44,16 @@ describe("Bug exposure: UI and state management", () => {
     // Submit with all fields empty
     await user.click(screen.getByRole("button", { name: /calculate plan/i }));
 
-    // Wait for results to appear (the app has a 700ms async delay)
-    await waitFor(
-      () => {
-        expect(screen.getByText(/bmi/i)).toBeInTheDocument();
-      },
-      { timeout: 2000 }
-    );
+    // Validation errors should appear immediately (no async delay)
+    await waitFor(() => {
+      expect(screen.getByRole("alert")).toBeInTheDocument();
+    });
 
-    // Should NOT show NaN in results
+    // Should show validation messages, not NaN results
+    expect(screen.getByText(/weight must be a positive number/i)).toBeInTheDocument();
+    expect(screen.getByText(/height must be a positive number/i)).toBeInTheDocument();
+    expect(screen.getByText(/age must be a positive number/i)).toBeInTheDocument();
+
     const body = document.body.textContent || "";
     expect(body).not.toContain("NaN");
   });
